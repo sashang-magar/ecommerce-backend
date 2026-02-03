@@ -6,6 +6,16 @@
     <title>Document</title>
 </head>
 <body>
-    <h1> hello world</h1>
+    <h1>Products List</h1>
+    
+    {% if product %}
+        <ul>
+        {% for p in product %}
+            <li>{{ p.name }} - Price: ${{ p.unit_price }}, Stock: {{ p.inventory }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No products available.</p>
+    {% endif %}
 </body>
 </html>
