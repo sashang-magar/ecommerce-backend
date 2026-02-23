@@ -1,6 +1,6 @@
 from itertools import product
 from rest_framework import serializers
-from store.models import CartItem, Product , Collection , Review , Cart
+from store.models import CartItem, Customer, Product , Collection , Review , Cart
 from decimal import Decimal
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -87,8 +87,14 @@ class CartSerializer(serializers.ModelSerializer):
         model = Cart    
         fields = ['id', 'items', 'total_price' ]
 
-       
-    #for validating User registration
+class CustomerSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField()
+    class Meta:
+        model = Customer
+        fields = ['id', 'user_id' ,'phone', 'birth_date' , 'membership']
+
+
+#for validating User registration
     # def validate(self, data):
     #     if data['password']!= data['confirm_password']:
     #         return serializers.ValidationError('password do not match')

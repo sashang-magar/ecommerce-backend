@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,12 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'djoser',
     'django_filters',
     'playground' , 
     'store' ,
     'tags' ,
     'likes' , 
-    'store_custom',
+    'core',
     'debug_toolbar',
 ]
 
@@ -135,6 +137,27 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 REST_FRAMEWORK = {
-    'COERCE_DECIMAL_TO_STRING' : False
+    'COERCE_DECIMAL_TO_STRING' : False,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+}
+
+AUTH_USER_MODEL = 'core.User'
+
+
+DJOSER = {
+    'SERIALIZERS':{
+        'user_create' : 'core.serializers.UserCreateSerializer'
+
+    }
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=5)
 }

@@ -4,12 +4,12 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from store.filters import ProductFilter
 from store.pagination import DefaultPagination
-from .models import Cart, CartItem, OrderItem, Product , Collection , Review
-from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, ProductSerializer , CollectionSerializer , ReviewSerializer, UpdateCartItemSerializer
+from .models import Cart, CartItem, Customer, OrderItem, Product , Collection , Review
+from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CustomerSerializer, ProductSerializer , CollectionSerializer , ReviewSerializer, UpdateCartItemSerializer
 from rest_framework import status
 from django.db.models import Count
 from rest_framework.views import APIView
-from rest_framework.mixins import ListModelMixin, CreateModelMixin ,RetrieveModelMixin , DestroyModelMixin
+from rest_framework.mixins import ListModelMixin, CreateModelMixin ,RetrieveModelMixin , DestroyModelMixin,UpdateModelMixin
 from rest_framework.generics import ListCreateAPIView , RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet , GenericViewSet
 from django_filters.rest_framework import DjangoFilterBackend
@@ -79,7 +79,9 @@ class CollectionViewSet(ModelViewSet):
         return super().destroy(request, *args, **kwargs)
     
 
-
+class CustomerViewSet(CreateModelMixin , RetrieveModelMixin, UpdateModelMixin , GenericViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
 
 
 #Generic View

@@ -84,9 +84,11 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ['first_name' , 'last_name' , 'membership' , 'orders']
     list_per_page = 10
     list_editable = ['membership']
-    ordering = ['first_name' , 'last_name'] #Only affects the Django admin
+    list_select_related = ['user']
+    ordering = ['user__first_name' , 'user__last_name'] #Only affects the Django admin
     search_fields = ['first_name__istartswith' , 'last_name__istartswith']
 
+    @admin.display(ordering='orders_count') 
     def orders(self, customer):
         return customer.orders
     
@@ -110,3 +112,4 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
 
 
+ 
