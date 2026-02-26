@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from store.filters import ProductFilter
 from store.pagination import DefaultPagination
 from store.permissions import FullDjangoModelPermission, IsAdminOrReadOnly, ViewCustomerHistoryPermission
-from .models import Cart, CartItem, Customer, OrderItem, Product , Collection , Review
-from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CustomerSerializer, ProductSerializer , CollectionSerializer , ReviewSerializer, UpdateCartItemSerializer
+from .models import Cart, CartItem, Customer, Order, OrderItem, Product , Collection , Review
+from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CreateOrderSerializer, CustomerSerializer, OrderSerializer, ProductSerializer , CollectionSerializer , ReviewSerializer, UpdateCartItemSerializer
 from rest_framework import status
 from django.db.models import Count
 from rest_framework.views import APIView
@@ -111,7 +111,31 @@ class CustomerViewSet(ModelViewSet):
             serializer.save()
             return Response(serializer.data)
 
+class OrderViewSet(ModelViewSet):
+    # queryset = Order.objects.all()
+    # serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def create(self, request, *args, **kwargs):
+        serializer = CreateOrderSerializer(data=request.data, context={'user_id':self.request.user.id})
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
+        serializer = OrderSerializer(order)
+        return Response(serializer.data)
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateOrderSerializer
+        return OrderSerializer
 
+    
+
+    def get_queryset(self):
+        user = self.request.user
+        if self.request.user.is_staff:
+            return Order.objects.all()
+        (customer_id ,created) = Customer.objects.only('id').get_or_create(user_id= self.request.user.id)
+        return Order.objects.filter(customer_id=customer_id)
 
 #Generic View
 # class ProductList(ListCreateAPIView):

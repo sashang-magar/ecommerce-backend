@@ -114,7 +114,7 @@ class Address(models.Model):
     customer = models.ForeignKey(Customer , on_delete=models.CASCADE)
     
 class OrderItem(models.Model):
-    order= models.ForeignKey(Order , on_delete=models.PROTECT)
+    order= models.ForeignKey(Order , on_delete=models.PROTECT , related_name='items')
     product = models.ForeignKey(Product , on_delete=models.PROTECT, related_name='orderitems')
     unit_price = models.DecimalField(max_digits=6 , decimal_places=2)
     quantity = models.PositiveSmallIntegerField()
