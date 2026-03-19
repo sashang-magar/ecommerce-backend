@@ -146,9 +146,6 @@ REST_FRAMEWORK = {
     # ]
 }
 
-# SIMPLE_JWT = {
-   
-# }
 
 AUTH_USER_MODEL = 'core.User'
 

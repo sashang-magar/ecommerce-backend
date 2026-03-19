@@ -42,8 +42,6 @@ class InventoryFilter(admin.SimpleListFilter):
         if self.value() == '<50':
             return queryset.filter(inventory__lt=50)
 
-
-
 # admin.site.register(models.Product)
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
